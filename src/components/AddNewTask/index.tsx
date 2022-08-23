@@ -1,10 +1,42 @@
+import { v4 as uuid } from 'uuid';
+
 import { PlusCircle } from 'phosphor-react';
+import { FormEvent, useState } from 'react';
 import { AddNewTaskForm } from "./styles";
 
-export function AddNewTask() {
+interface NewTaskProps {
+  id: string;
+  description: string;
+  isChecked: boolean;
+}
+interface AddNewTaskProps {
+  onCreateNewTask: (newTask: NewTaskProps) => void;
+}
+
+export function AddNewTask({onCreateNewTask}: AddNewTaskProps) {
+  const [task, setTask] = useState('');
+  
+  function handleCreateNewTask(event: FormEvent) {
+    event.preventDefault();
+
+    const newListTask = {
+      id: uuid(),
+      description: task,
+      isChecked: false
+    }
+
+    onCreateNewTask(newListTask);
+    setTask('');
+  }
+
   return (
-    <AddNewTaskForm>
-      <input type="text" placeholder="Adicione uma nova tarefa" />
+    <AddNewTaskForm onSubmit={handleCreateNewTask}>
+      <input 
+        type="text" 
+        value={task}
+        onChange={(e) => setTask(e.currentTarget.value)}
+        placeholder="Adicione uma nova tarefa" 
+      />
       <button type="submit">
         <span>Criar</span>
         <PlusCircle size={16} />
