@@ -14,10 +14,9 @@ interface NewTaskProps {
   isChecked: boolean;
 }
 
-interface deleteOneTaskProps extends NewTaskProps {}
-
 export function App() {
   const [listTasks, setListTasks] = useState<NewTaskProps[]>([])
+  const [isChecked, setIsChecked] = useState(false)
 
   function onCreateNewTask(newTask: NewTaskProps) {
     setListTasks([...listTasks, newTask]);
@@ -37,9 +36,14 @@ export function App() {
       <Header />
       <TasksContainer>
         <AddNewTask onCreateNewTask={onCreateNewTask} />
-        <TaskCounter />
+        <TaskCounter tasksCreated={listTasks} />
         { listTasks.length > 0 
-          ? ( <TasksList tasks={listTasks} onDeleteOneTask={onDeleteOneTask} /> ) 
+          ? ( 
+              <TasksList 
+                tasks={listTasks} 
+                onDeleteOneTask={onDeleteOneTask} 
+              /> 
+            ) 
           : ( <NotFoundTask /> )
         }
       </TasksContainer>

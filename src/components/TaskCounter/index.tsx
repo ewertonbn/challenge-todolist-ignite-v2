@@ -1,18 +1,27 @@
 import { TaskCounterContainer } from "./styles";
 
-export function TaskCounter() {
+interface TaskProps {
+  id: string;
+  description: string;
+  isChecked: boolean;
+}
+interface TaskCounter {
+  tasksCreated: TaskProps[]
+}
+
+export function TaskCounter({tasksCreated}: TaskCounter) {
   return (
     <TaskCounterContainer>
       <div className="counter">
         <strong>Tarefas criadas</strong>
         <div>
-          <p>5</p>
+          <p>{tasksCreated.length}</p>
         </div>
       </div>
       <div className="counter">
         <strong>Concluídas</strong>
         <div>
-          <p>2 de 5</p>
+          <p>2 de {tasksCreated.length}</p>
         </div>
       </div>
     </TaskCounterContainer>

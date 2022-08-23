@@ -4,8 +4,8 @@ interface ButtonCheckProps {
   taskIsChecked: boolean;
 }
 
-export function ButtonCheck(taskIsChecked: ButtonCheckProps) {
+export function ButtonCheck({taskIsChecked}: ButtonCheckProps) {
   return (
-    <ButtonCheckCustom />
+    <ButtonCheckCustom taskIsChecked={taskIsChecked} />
   )
 }
