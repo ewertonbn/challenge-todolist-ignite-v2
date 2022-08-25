@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { v4 as uuid } from 'uuid';
 
 import { AddNewTask } from "./components/AddNewTask";
 import { Header } from "./components/Header";
@@ -11,20 +10,32 @@ import { GlobalStyle, TasksContainer } from "./styles/global";
 interface NewTaskProps {
   id: string;
   description: string;
-  isChecked: boolean;
+  isFinished: boolean;
 }
 
 export function App() {
   const [listTasks, setListTasks] = useState<NewTaskProps[]>([])
-  const [isChecked, setIsChecked] = useState(false)
+
+  const countTaskFinished = listTasks.filter(task => task.isFinished).length;
+
+  function onToggleCheckedTask(id: string) {
+    const taskChecked = listTasks.map(task => 
+      task.id === id ? {
+        ...task,
+        isFinished: !task.isFinished
+      } : task
+    )
+
+    setListTasks(taskChecked)
+  }
 
   function onCreateNewTask(newTask: NewTaskProps) {
     setListTasks([...listTasks, newTask]);
   }
 
-  function onDeleteOneTask(task: string) {
+  function onDeleteTask(id: string) {
     const newListTasks = listTasks.filter(item => {
-      return item.id !== task
+      return item.id !== id
     })
 
     setListTasks(newListTasks);
@@ -36,12 +47,13 @@ export function App() {
       <Header />
       <TasksContainer>
         <AddNewTask onCreateNewTask={onCreateNewTask} />
-        <TaskCounter tasksCreated={listTasks} />
+        <TaskCounter tasksCreated={listTasks} countTaskFinished={countTaskFinished} />
         { listTasks.length > 0 
           ? ( 
               <TasksList 
                 tasks={listTasks} 
-                onDeleteOneTask={onDeleteOneTask} 
+                onDeleteTask={onDeleteTask} 
+                onToggleCheckedTask={onToggleCheckedTask}
               /> 
             ) 
           : ( <NotFoundTask /> )

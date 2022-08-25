@@ -1,33 +1,42 @@
 import { Trash } from 'phosphor-react';
 import { useState } from 'react';
-import { ButtonCheck } from '../ButtonCheck';
 
-import { TasksListContainer } from "./styles";
+import { ButtonCheckCustom, TasksListContainer } from "./styles";
 
 interface TasksListType {
   id: string;
   description: string;
-  isChecked: boolean;
+  isFinished: boolean;
 }
 
 interface TasksListProps {
   tasks: TasksListType[],
-  onDeleteOneTask: (task: string) => void;
+  onDeleteTask: (task: string) => void;
+  onToggleCheckedTask: (task: string) => void;
 }
 
-export function TasksList({tasks, onDeleteOneTask}: TasksListProps) {
-  const [taskIsChecked, setTaskIsChecked] = useState(false);
+export function TasksList({tasks, onDeleteTask, onToggleCheckedTask}: TasksListProps) {
 
-  function handleDeleteTask(task: string) {
-    onDeleteOneTask(task)
+  function handleCheckedTask(id: string) {
+    onToggleCheckedTask(id)
+  }
+
+  function handleDeleteTask(id: string) {
+    onDeleteTask(id)
   }
 
   return (
     <TasksListContainer>
       { tasks.map(task => (
         <div className="item" key={task.id}>
-          <ButtonCheck taskIsChecked={taskIsChecked} />
-          <p>{task.description}</p>
+          <ButtonCheckCustom 
+            onClick={() => handleCheckedTask(task.id)}
+            taskIsFinished={task.isFinished} 
+          />
+          { task.isFinished 
+            ? <p><del>{task.description}</del></p>
+            : <p>{task.description}</p>
+          }
           <button 
             type="button" 
             className="delete"

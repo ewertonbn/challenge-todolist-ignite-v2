@@ -3,13 +3,14 @@ import { TaskCounterContainer } from "./styles";
 interface TaskProps {
   id: string;
   description: string;
-  isChecked: boolean;
+  isFinished: boolean;
 }
 interface TaskCounter {
-  tasksCreated: TaskProps[]
+  tasksCreated: TaskProps[];
+  countTaskFinished: number;
 }
 
-export function TaskCounter({tasksCreated}: TaskCounter) {
+export function TaskCounter({tasksCreated, countTaskFinished}: TaskCounter) {
   return (
     <TaskCounterContainer>
       <div className="counter">
@@ -21,7 +22,7 @@ export function TaskCounter({tasksCreated}: TaskCounter) {
       <div className="counter">
         <strong>Concluídas</strong>
         <div>
-          <p>2 de {tasksCreated.length}</p>
+          <p>{countTaskFinished} de {tasksCreated.length}</p>
         </div>
       </div>
     </TaskCounterContainer>

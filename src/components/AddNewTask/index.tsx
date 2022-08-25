@@ -7,7 +7,7 @@ import { AddNewTaskForm } from "./styles";
 interface NewTaskProps {
   id: string;
   description: string;
-  isChecked: boolean;
+  isFinished: boolean;
 }
 interface AddNewTaskProps {
   onCreateNewTask: (newTask: NewTaskProps) => void;
@@ -22,7 +22,7 @@ export function AddNewTask({onCreateNewTask}: AddNewTaskProps) {
     const newListTask = {
       id: uuid(),
       description: task,
-      isChecked: false
+      isFinished: false
     }
 
     onCreateNewTask(newListTask);
